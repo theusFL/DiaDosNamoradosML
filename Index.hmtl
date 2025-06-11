@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Dia dos Namorados!</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="heart"></div>
+<div class="heart"></div>
+<div class="heart"></div>
+<div class="heart"></div>
+<div class="heart"></div>
+<div id="tela-inicial" class="container tela-inicial-estilo">
+    <h1>Matheus Ferreira de Lima & Larissa Pereira</h1>
+    <h2>Feliz Dia dos Namorados! ❤️</h2>
+    <button id="abrir-mensagem">Clique aqui</button>
+</div>
+
+<div id="tela-mensagem" class="container hidden">
+    <h2>Larissa,</h2>
+    <p>Desde o dia em que te conheci, minha vida ganhou novas cores e significados, sei que ainda nao temos muito tempo juntos, mas quero que essa data se repita por muitos anos. Cada momento ao seu lado é um presente, e sou imensamente grato por ter você em minha vida. Seu sorriso ilumina meus dias, seu carinho me fortalece e seu amor me completa.</p>
+    <p>Neste Dia dos Namorados, quero celebrar nosso amor e tudo o que construímos juntos. Que a nossa jornada continue sendo repleta de cumplicidade, alegria e infinitos motivos para sorrir.</p>
+    <p>Te amo. Que nosso amor continue crescendo e se fortalecendo a cada dia.</p>
+    <p>Matheus</p>
+
+    <div class="countdown-section">
+        <h3>Nosso amor floresceu há:</h3>
+        <div class="countdown">
+            <div class="time-unit">
+                <span id="days">00</span>Dias
+            </div>
+            <div class="time-unit">
+                <span id="hours">00</span>Horas
+            </div>
+            <div class="time-unit">
+                <span id="minutes">00</span>Minutos
+            </div>
+            <div class="time-unit">
+                <span id="seconds">00</span>Segundos
+            </div>
+        </div>
+        </div>
+
+    <div class="repo-section">
+        <button id="ir-para-surpresa">Clique aqui para uma surpresa!</button>
+    </div>
+
+    <button id="voltar">Voltar</button>
+</div>
+
+<script>
+    const telaInicial = document.getElementById('tela-inicial');
+    const telaMensagem = document.getElementById('tela-mensagem');
+    const abrirMensagemBtn = document.getElementById('abrir-mensagem');
+    const voltarBtn = document.getElementById('voltar');
+    const irParaSurpresaBtn = document.getElementById('ir-para-surpresa'); 
+
+    const REPOSITORIO_URL = "https://drive.google.com/drive/folders/13VfF_MPKyCz5Tq-jJ1uuplitTg0bhmR2"; 
+
+    abrirMensagemBtn.addEventListener('click', () => {
+        telaInicial.classList.add('hidden');
+        telaMensagem.classList.remove('hidden');
+        updateCountdown();
+    });
+
+    voltarBtn.addEventListener('click', () => {
+        telaMensagem.classList.add('hidden');
+        telaInicial.classList.remove('hidden');
+    });
+
+    irParaSurpresaBtn.addEventListener('click', () => {
+        window.open('https://drive.google.com/drive/folders/13VfF_MPKyCz5Tq-jJ1uuplitTg0bhmR2', '_blank'); 
+    });
+
+    // --- Código para a contagem de tempo ---
+    // AQUI ESTÁ A DATA DE INÍCIO DA CONTAGEM CORRIGIDA (17 de março de 2024 às 00:00:00)
+    const startDateRaw = "2024-03-17T00:00:00"; // DATA CORRIGIDA PARA 17/03/2024!
+    const startDate = new Date(startDateRaw);
+    // REMOVIDA: const startDateDisplayElement = document.getElementById('startDateDisplay');
+
+    // REMOVIDA: startDateDisplayElement.textContent = startDate.toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    function updateCountdown() {
+        const now = new Date();
+        const diff = now.getTime() - startDate.getTime();
+
+        if (diff < 0) {
+            document.getElementById('days').textContent = "00";
+            document.getElementById('hours').textContent = "00";
+            document.getElementById('minutes').textContent = "00";
+            document.getElementById('seconds').textContent = "00";
+            return;
+        }
+
+        const secondsTotal = Math.floor(diff / 1000);
+        const minutesTotal = Math.floor(secondsTotal / 60);
+        const hoursTotal = Math.floor(minutesTotal / 60);
+        const days = Math.floor(hoursTotal / 24);
+
+        const displaySeconds = secondsTotal % 60;
+        const displayMinutes = minutesTotal % 60;
+        const displayHours = hoursTotal % 24;
+
+        document.getElementById('days').textContent = String(days).padStart(2, '0');
+        document.getElementById('hours').textContent = String(displayHours).padStart(2, '0');
+        document.getElementById('minutes').textContent = String(displayMinutes).padStart(2, '0');
+        document.getElementById('seconds').textContent = String(displaySeconds).padStart(2, '0');
+    }
+
+    let countdownInterval;
+    abrirMensagemBtn.addEventListener('click', () => {
+        telaInicial.classList.add('hidden');
+        telaMensagem.classList.remove('hidden');
+        updateCountdown();
+        if (!countdownInterval) {
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+    });
+
+    voltarBtn.addEventListener('click', () => {
+        telaMensagem.classList.add('hidden');
+        telaInicial.classList.remove('hidden');
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+        }
+    });
+
+    // Se a tela de mensagem não começar oculta
+    if (!telaMensagem.classList.contains('hidden')) {
+        updateCountdown();
+        countdownInterval = setInterval(updateCountdown, 1000);
+    }
+</script>
+</body>
+</html>
